@@ -1,56 +1,72 @@
-# Alpine is a lightweight version of Linux.
-# apline:latest could also be used
-FROM alpine:latest
+################################
+# Pull base image
+################################
+
+FROM ubuntu:latest
+
+################################
+# Package install
+################################
 
 RUN \
-# apk add installs the following
- apk add \
-   curl \docker
-   python \
-   py-pip \
-   py-boto \
-   py-dateutil \
-   py-httplib2 \
-   py-jinja2 \
-   py-paramiko \
-   py-setuptools \
-   py-yaml \
-   openssh-client \
-   bash \
-   tar && \
- pip install --upgrade pip
+# Update
+apt update -y && \
+# Install tar archive
+apt install tar -y && \
+# need wget
+apt install wget -y && \
+# nano
+apt install nano -y && \
+# GIT
+apt install git -y
 
-# Makes the Ansible directories
+################################
+# Install python
+################################
+
+RUN apt-get install -y python3-pip
+#RUN ln -s /usr/bin/python3 python
+RUN pip3 install --upgrade pip
+RUN python3 -V
+RUN pip --version
+
+################################
+# Install Ansible
+################################
+
+# Makes the temporary Ansible directory
 RUN mkdir /etc/ansible /ansible
-RUN mkdir ~/.ssh
 
-# Over rides SSH Hosts Checking
-RUN echo "host *" >> ~/.ssh/config &&\
-    echo "StrictHostKeyChecking no" >> ~/.ssh/config
-
-# Downloads the Ansible tar (curl) and saves it (-o)
+#Downloads Ansible from sourceurl
 RUN \
-  curl -fsSL https://releases.ansible.com/ansible/ansible-2.9.3.tar.gz -o ansible.tar.gz
+  wget https://releases.ansible.com/ansible/ansible-latest.tar.gz
 # Extracts Ansible from the tar file
 RUN \
-  tar -xzf ansible.tar.gz -C ansible --strip-components 1 && \
-  rm -fr ansible.tar.gz /ansible/docs /ansible/examples /ansible/packaging
+  tar -xzf ansible-latest.tar.gz -C ansible --strip-components 1 && \
+  rm -fr ansible-latest.tar.gz /ansible/docs /ansible/examples /ansible/packaging
 
-# Makes a directory for ansible playbooks
-RUN mkdir -p /ansible/playbooks
-# Makes the playbooks directory the working directory
-WORKDIR /ansible/playbooks
+################################
+# Install AWS CLI
+################################
+RUN pip install awscli --upgrade --user
+
+# add aws cli location to path
+ENV PATH=~/.local/bin:$PATH
+
+################################
+# Volume creation
+################################
+RUN mkdir /ansible-playbooks
+VOLUME /ansible-playbooks
+
+RUN mkdir /aws-credentials
+VOLUME /aws-credentials
+
 
 # Sets environment variables
 ENV ANSIBLE_GATHERING smart
 ENV ANSIBLE_HOST_KEY_CHECKING False
 ENV ANSIBLE_RETRY_FILES_ENABLED False
-ENV ANSIBLE_ROLES_PATH /ansible/playbooks/roles
 ENV ANSIBLE_SSH_PIPELINING True
 ENV PATH /ansible/bin:$PATH
 ENV PYTHONPATH /ansible/lib
-
-# Sets entry point (same as running ansible-playbook)
-ENTRYPOINT ["ansible-playbook"]
-# Can also use ["ansible"] if wanting it to be an ad-hoc command version
-#ENTRYPOINT ["ansible"]

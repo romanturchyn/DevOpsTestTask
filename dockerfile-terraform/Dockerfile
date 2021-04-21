@@ -1,6 +1,11 @@
-# Pull base image.
+################################
+# Pull base image
+################################
 FROM ubuntu:latest
 
+################################
+# Package install
+################################
 RUN \
 # Update
 apt update -y && \
@@ -9,9 +14,19 @@ apt install unzip -y && \
 # need wget
 apt install wget -y && \
 # nano
-apt install nano -y
+apt install nano -y && \
 # GIT
-apt install git-all -y
+apt install git -y
+
+################################
+# Install python
+################################
+
+RUN apt-get install -y python3-pip
+#RUN ln -s /usr/bin/python3 python
+RUN pip3 install --upgrade pip
+RUN python3 -V
+RUN pip --version
 
 ################################
 # Install Terraform
@@ -27,16 +42,6 @@ RUN unzip terraform_0.15.0_linux_amd64.zip
 RUN mv terraform /usr/local/bin/
 # Check that it's installed
 RUN terraform --version
-
-################################
-# Install python
-################################
-
-RUN apt-get install -y python3-pip
-#RUN ln -s /usr/bin/python3 python
-RUN pip3 install --upgrade pip
-RUN python3 -V
-RUN pip --version
 
 ################################
 # Install AWS CLI
