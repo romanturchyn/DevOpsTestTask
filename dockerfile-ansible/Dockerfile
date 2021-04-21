@@ -1,5 +1,3 @@
-# Alpine is a lightweight version of Linux.
-# apline:latest could also be used
 FROM alpine:latest
 
 RUN \
@@ -25,8 +23,8 @@ RUN mkdir /etc/ansible /ansible
 RUN mkdir ~/.ssh
 
 # Over rides SSH Hosts Checking
-RUN echo "host *" >> ~/.ssh/config &&\
-    echo "StrictHostKeyChecking no" >> ~/.ssh/config
+#RUN echo "host *" >> ~/.ssh/config &&\
+#    echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
 # Downloads the Ansible tar (curl) and saves it (-o)
 RUN \
@@ -49,8 +47,3 @@ ENV ANSIBLE_ROLES_PATH /ansible/playbooks/roles
 ENV ANSIBLE_SSH_PIPELINING True
 ENV PATH /ansible/bin:$PATH
 ENV PYTHONPATH /ansible/lib
-
-# Sets entry point (same as running ansible-playbook)
-ENTRYPOINT ["ansible-playbook"]
-# Can also use ["ansible"] if wanting it to be an ad-hoc command version
-#ENTRYPOINT ["ansible"]
