@@ -59,4 +59,4 @@ VOLUME /aws-credentials
 # Terraform environment creation files
 ################################
 
-RUN
+RUN touch /terraform-resources/simple-task.tf
