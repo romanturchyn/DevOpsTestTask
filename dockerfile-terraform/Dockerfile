@@ -52,13 +52,13 @@ RUN pip install awscli --upgrade --user
 ENV PATH=~/.local/bin:$PATH
 
 ################################
-# Volume creation
+# Volume and folders creation
 ################################
-RUN mkdir /terraform-resources
-VOLUME /terraform-resources
+RUN mkdir /terraform
+VOLUME /terraform
 
-RUN mkdir /aws-credentials
-VOLUME /aws-credentials
+RUN mkdir /terraform-resources/aws-credentials
+RUN mkdir /terraform-resources/terraform-resources
 
 ################################
 # Terraform environment creation files

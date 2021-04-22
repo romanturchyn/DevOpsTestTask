@@ -52,8 +52,8 @@ ENV PATH=~/.local/bin:$PATH
 RUN mkdir /ansible
 VOLUME /ansible
 
-RUN mkdir /aws-credentials
-VOLUME /aws-credentials
+RUN mkdir /ansible/aws-credentials
+RUN mkdir /ansible/ansible-playbooks
 
 # Sets environment variables
 ENV ANSIBLE_GATHERING smart
