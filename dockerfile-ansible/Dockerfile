@@ -19,7 +19,8 @@ apt install python3-pip -y && \
 apt install sshpass -y && \
 #install openssh-client
 apt install openssh-client -y && \
-#apt install nano -y && \
+#nano
+apt install nano -y && \
 # GIT
 apt install git -y
 
@@ -60,3 +61,7 @@ ENV ANSIBLE_HOST_KEY_CHECKING False
 ENV ANSIBLE_RETRY_FILES_ENABLED False
 ENV ANSIBLE_SSH_PIPELINING True
 ENV PYTHONPATH /ansible/lib
+
+#aliases
+RUN echo 'alias av="ansible --version"' >~/.bash_aliases
+RUN echo 'alias aap="ansible all -m ping"' >>~/.bash_aliases

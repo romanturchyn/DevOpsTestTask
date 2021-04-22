@@ -65,3 +65,13 @@ VOLUME /aws-credentials
 ################################
 
 RUN touch /terraform-resources/simple-task.tf
+
+#env variables
+RUN export AWS_ACCESS_KEY_ID=/aws-credentials/access-key-id
+RUN export AWS_SECRET_ACCESS_KEY=/aws-credentials/secret-key.pem
+RUN export AWS_DEFAULT_REGION=eu-central-1
+
+#aliases
+RUN echo 'alias tfi="terraform init"' >~/.bash_aliases
+RUN echo 'alias tfp="terraform plan"' >>~/.bash_aliases
+RUN echo 'alias tfa="terraform apply"' >>~/.bash_aliases
