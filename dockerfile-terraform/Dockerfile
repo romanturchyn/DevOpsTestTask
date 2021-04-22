@@ -64,11 +64,11 @@ VOLUME /aws-credentials
 # Terraform environment creation files
 ################################
 
-RUN touch /terraform-resources/simple-task.tf
+RUN touch /terraform-resources/ec2-creation.tf
 
 #env variables
 RUN export AWS_ACCESS_KEY_ID=/aws-credentials/access-key-id
-RUN export AWS_SECRET_ACCESS_KEY=/aws-credentials/secret-key.pem
+RUN export AWS_SECRET_ACCESS_KEY=/aws-credentials/secret-access-key
 RUN export AWS_DEFAULT_REGION=eu-central-1
 
 #aliases
