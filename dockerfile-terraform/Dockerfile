@@ -11,12 +11,16 @@ RUN \
 apt update -y && \
 # Install Unzip
 apt install unzip -y && \
-# need wget
+# Install wget
 apt install wget -y && \
-# nano
+# Install nano
 apt install nano -y && \
-# GIT
+# Install GIT
 apt install git -y
+
+#Clear cache
+RUN rm -rf /var/lib/apt/lists/* && \
+        apt clean
 
 ################################
 # Install python
@@ -54,23 +58,20 @@ ENV PATH=~/.local/bin:$PATH
 ################################
 # Volume and folders creation
 ################################
+#attach volume
 RUN mkdir /terraform
 VOLUME /terraform
-
+#create directories
 RUN mkdir /terraform-resources/aws-credentials
 RUN mkdir /terraform-resources/terraform-resources
 
 ################################
 # Terraform environment creation files
 ################################
-
-RUN touch /terraform-resources/ec2-creation.tf
-
 #env variables
 RUN export AWS_ACCESS_KEY_ID=/aws-credentials/access-key-id
 RUN export AWS_SECRET_ACCESS_KEY=/aws-credentials/secret-access-key
 RUN export AWS_DEFAULT_REGION=eu-central-1
-
 #aliases
 RUN echo 'alias tfi="terraform init"' >~/.bash_aliases
 RUN echo 'alias tfp="terraform plan"' >>~/.bash_aliases
