@@ -52,6 +52,42 @@ ENV PATH=~/.local/bin:$PATH
 RUN mkdir /ansible
 VOLUME /ansible
 
+FROM alpine:latest
+
+RUN \
+# apk add installs the following
+ apk add \
+   curl \docker
+   python \
+   py-pip \
+   py-boto \
+   py-dateutil \
+   py-httplib2 \
+   py-jinja2 \
+   py-paramiko \
+   py-setuptools \
+   py-yaml \
+   openssh-client \
+   bash \
+   tar && \
+ pip install --upgrade pip
+
+# Makes the Ansible directories
+RUN mkdir /etc/ansible /ansible
+RUN mkdir ~/.ssh
+
+# Over rides SSH Hosts Checking
+#RUN echo "host *" >> ~/.ssh/config &&\
+#    echo "StrictHostKeyChecking no" >> ~/.ssh/config
+
+# Downloads the Ansible tar (curl) and saves it (-o)
+RUN \
+  curl -fsSL https://releases.ansible.com/ansible/ansible-2.9.3.tar.gz -o ansible.tar.gz
+# Extracts Ansible from the tar file
+RUN \
+  tar -xzf ansible.tar.gz -C ansible --strip-components 1 && \
+  rm -fr ansible.tar.gz /ansible/docs /ansible/examples /ansible/packaging
+
 RUN mkdir /aws-credentials
 VOLUME /aws-credentials
 
