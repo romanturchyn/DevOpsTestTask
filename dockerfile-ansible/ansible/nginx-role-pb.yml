@@ -1,0 +1,22 @@
+---
+- hosts: prod_server1
+  become:
+    true
+  become_method:
+    su
+  become_user:
+    root
+  roles:
+   - epel
+   - nginx
+   
+
+#- hosts: debian-servers
+#  become:
+#    true
+#  become_method:
+#    sudo
+# become_user:
+#    root
+#  roles:
+#   - nginx
