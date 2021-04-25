@@ -1,3 +1,57 @@
+################################
+# Pull base image
+################################
+
+FROM ubuntu:latest
+
+################################
+# Package install
+################################
+
+RUN \
+#Update
+apt update -y && \
+#install gnupg2 -y && \
+apt install gnupg2 -y && \
+#install python3-pip
+apt install python3-pip -y && \
+#install sshpass
+apt install sshpass -y && \
+#install openssh-client
+apt install openssh-client -y && \
+#nano
+apt install nano -y && \
+# GIT
+apt install git -y
+
+RUN rm -rf /var/lib/apt/lists/* && \
+        apt clean
+
+################################
+# Install Ansible
+################################
+
+RUN python3 -m pip install --upgrade pip cffi && \
+    pip install ansible==2.10.3 && \
+    pip install mitogen ansible-lint jmespath && \
+    pip install --upgrade pywinrm
+
+################################
+# Install AWS CLI
+################################
+
+RUN pip install awscli --upgrade --user
+
+# add aws cli location to path
+ENV PATH=~/.local/bin:$PATH
+
+################################
+# Volume creation
+################################
+
+RUN mkdir /ansible
+VOLUME /ansible
+
 FROM alpine:latest
 
 RUN \
@@ -34,16 +88,16 @@ RUN \
   tar -xzf ansible.tar.gz -C ansible --strip-components 1 && \
   rm -fr ansible.tar.gz /ansible/docs /ansible/examples /ansible/packaging
 
-# Makes a directory for ansible playbooks
-RUN mkdir -p /ansible/playbooks
-# Makes the playbooks directory the working directory
-WORKDIR /ansible/playbooks
+RUN mkdir /aws-credentials
+VOLUME /aws-credentials
 
 # Sets environment variables
 ENV ANSIBLE_GATHERING smart
 ENV ANSIBLE_HOST_KEY_CHECKING False
 ENV ANSIBLE_RETRY_FILES_ENABLED False
-ENV ANSIBLE_ROLES_PATH /ansible/playbooks/roles
 ENV ANSIBLE_SSH_PIPELINING True
-ENV PATH /ansible/bin:$PATH
 ENV PYTHONPATH /ansible/lib
+
+#aliases
+RUN echo 'alias av="ansible --version"' >~/.bash_aliases
+RUN echo 'alias aap="ansible all -m ping"' >>~/.bash_aliases
