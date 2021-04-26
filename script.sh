@@ -1,5 +1,4 @@
 #!/bin/bash
-# Bash Menu Script Example
 
 PS3='Please enter your choice: '
 options=("Docker Build and run Ansible container" "Docker Build and run Terraform container" "Show Docker images" "Quit")
