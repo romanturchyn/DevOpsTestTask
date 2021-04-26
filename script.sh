@@ -24,7 +24,7 @@ do
             echo "you chose Show Docker images"
             Docker images
             ;;
-        "Quit, BYE!")
+        "Quit")
             break
             ;;
         *) echo "invalid option $REPLY";;
