@@ -54,6 +54,7 @@ RUN mkdir /ansible/ansible-playbooks
 ################################
 # Ansible environment creation files
 ################################
+
 # Sets environment variables
 ENV ANSIBLE_GATHERING smart
 ENV ANSIBLE_HOST_KEY_CHECKING False
