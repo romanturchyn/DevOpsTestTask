@@ -47,9 +47,6 @@ ENV PATH=~/.local/bin:$PATH
 #attach volume
 RUN mkdir /ansible
 VOLUME /ansible
-#create directories
-RUN mkdir /ansible/aws-credentials
-RUN mkdir /ansible/ansible-playbooks
 
 ################################
 # Ansible environment creation files
