@@ -22,7 +22,7 @@ do
             ;;
         "Show Docker images")
             echo "you chose Show Docker images"
-            Docker images
+            docker images
             ;;
         "Quit")
             break
