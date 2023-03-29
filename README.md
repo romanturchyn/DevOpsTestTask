@@ -1,5 +1,5 @@
-# DevOpsTestDockers
-This is a repo of DevOps test task
+# Dockers
+This is a repo for docker sandbox
 
 
 How to operate:
